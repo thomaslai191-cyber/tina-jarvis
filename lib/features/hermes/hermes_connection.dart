@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
-import 'package:flutter/material.dart';
+/// Hermes Connection Service
+/// ...
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 /// Hermes Agent 连接服务
@@ -140,7 +142,7 @@ class HermesConnectionService {
       'type': 'connect',
       'client': 'tina_jarvis_app',
       'version': '1.0.0',
-      'platform': Platform.isAndroid ? 'Android' : 'Unknown',
+      'platform': kIsWeb ? 'Web' : (Platform.isAndroid ? 'Android' : Platform.operatingSystem),
       'capabilities': [
         'voice_input',
         'voice_output',
