@@ -6,7 +6,7 @@ import '../theme/tina_theme.dart';
 
 /// 中央眼睛动画 - TINA 的核心视觉
 class TinaEye extends StatefulWidget {
-  final State state;
+  final TinaState state;
   final double size;
   final AnimationController? waveController;
   
@@ -21,7 +21,7 @@ class TinaEye extends StatefulWidget {
   State<TinaEye> createState() => _TinaEyeState();
 }
 
-enum State { idle, listening, thinking, speaking, error, offline }
+enum TinaState { idle, listening, thinking, speaking, error, offline }
 
 class _TinaEyeState extends State<TinaEye> with TickerProviderStateMixin {
   late AnimationController _pulseController;
@@ -59,17 +59,17 @@ class _TinaEyeState extends State<TinaEye> with TickerProviderStateMixin {
   
   Color get _eyeColor {
     switch (widget.state) {
-      case State.idle:
+      case TinaState.idle:
         return TinaColors.idle;
-      case State.listening:
+      case TinaState.listening:
         return TinaColors.listening;
-      case State.thinking:
+      case TinaState.thinking:
         return TinaColors.thinking;
-      case State.speaking:
+      case TinaState.speaking:
         return TinaColors.speaking;
-      case State.error:
+      case TinaState.error:
         return TinaColors.offline;
-      case State.offline:
+      case TinaState.offline:
         return Colors.grey;
     }
   }
@@ -104,7 +104,7 @@ class _TinaEyeState extends State<TinaEye> with TickerProviderStateMixin {
             alignment: Alignment.center,
             children: [
               // 外圈扫描动画
-              if (widget.state == State.listening || widget.state == State.thinking)
+              if (widget.state == TinaState.listening || widget.state == TinaState.thinking)
                 Transform.rotate(
                   angle: _rotationController.value * 2 * math.pi,
                   child: CustomPaint(
@@ -144,7 +144,7 @@ class _TinaEyeState extends State<TinaEye> with TickerProviderStateMixin {
               ),
               
               // 波环效果
-              if (widget.state == State.listening)
+              if (widget.state == TinaState.listening)
                 ...List.generate(3, (index) {
                   final delay = index * 0.3;
                   final progress = (_pulseController.value + delay) % 1.0;
@@ -277,7 +277,7 @@ class AudioWaveform extends StatelessWidget {
 
 /// 音频可视化动画
 class AnimatedAudioWaveform extends StatefulWidget {
-  final State state;
+  final TinaState state;
   final int barCount;
   final double maxHeight;
   
@@ -325,17 +325,17 @@ class _AnimatedAudioWaveformState extends State<AnimatedAudioWaveform>
   
   Color get _barColor {
     switch (widget.state) {
-      case State.idle:
+      case TinaState.idle:
         return TinaColors.idle;
-      case State.listening:
+      case TinaState.listening:
         return TinaColors.listening;
-      case State.thinking:
+      case TinaState.thinking:
         return TinaColors.thinking;
-      case State.speaking:
+      case TinaState.speaking:
         return TinaColors.speaking;
-      case State.error:
+      case TinaState.error:
         return Colors.red;
-      case State.offline:
+      case TinaState.offline:
         return Colors.grey;
     }
   }
@@ -350,9 +350,9 @@ class _AnimatedAudioWaveformState extends State<AnimatedAudioWaveform>
           builder: (context, child) {
             // 根据状态生成不同的波形
             double amplitude;
-            if (widget.state == State.idle) {
+            if (widget.state == TinaState.idle) {
               amplitude = 0.2 + _controllers[index].value * 0.1;
-            } else if (widget.state == State.listening) {
+            } else if (widget.state == TinaState.listening) {
               amplitude = 0.3 + _controllers[index].value * 0.7;
             } else {
               amplitude = 0.1 + _controllers[index].value * 0.5;

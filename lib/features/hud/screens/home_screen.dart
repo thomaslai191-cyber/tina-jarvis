@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late AnimationController _glowController;
   late AnimationController _textController;
   
-  State _currentState = State.idle;
+  TinaState _currentState = TinaState.idle;
   String _statusText = 'TINA 就绪';
   String _responseText = '';
   bool _isListening = false;
@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   
   void _showGreeting() {
     setState(() {
-      _currentState = State.speaking;
+      _currentState = TinaState.speaking;
       _statusText = 'TINA 在线';
       _responseText = '你好，我是 TINA。\n有什么可以帮助你的吗？';
     });
@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void _startListening() {
     setState(() {
       _isListening = true;
-      _currentState = State.listening;
+      _currentState = TinaState.listening;
       _statusText = '正在聆听...';
       _responseText = '';
     });
@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void _stopListening(String text) {
     setState(() {
       _isListening = false;
-      _currentState = State.thinking;
+      _currentState = TinaState.thinking;
       _statusText = '正在思考...';
       _conversation.add('你: $text');
     });
@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     // 模拟处理
     Future.delayed(const Duration(seconds: 2), () {
       setState(() {
-        _currentState = State.speaking;
+        _currentState = TinaState.speaking;
         _statusText = '正在回复';
         _responseText = '好的，正在为您打开文档文件夹。';
         _conversation.add('TINA: 正在为您打开文档文件夹');
@@ -484,17 +484,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   
   Color _getStateColor() {
     switch (_currentState) {
-      case State.idle:
+      case TinaState.idle:
         return TinaColors.idle;
-      case State.listening:
+      case TinaState.listening:
         return TinaColors.listening;
-      case State.thinking:
+      case TinaState.thinking:
         return TinaColors.thinking;
-      case State.speaking:
+      case TinaState.speaking:
         return TinaColors.speaking;
-      case State.error:
+      case TinaState.error:
         return Colors.red;
-      case State.offline:
+      case TinaState.offline:
         return Colors.grey;
     }
   }
